@@ -14,8 +14,8 @@
 
 ## Installation
 
-[1]: Clone the repo
    ```sh
+[1]: Clone the repo
    git clone https://github.com/engshadysalah/rock-paper-scissors-game-lottoland.git
 
    ```
@@ -23,8 +23,9 @@
 [2]: For the backend [lottoland-game-backend], Just you need to build the project with Maven.
    ```
 
+   ```
 [3]. For the Frontend, [lottoland-game-client], You need to install packages with npm, then run the project using angular command.
-   ```sh
+
    npm install
    ng serve
    ```
