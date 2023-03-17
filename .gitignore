@@ -1,0 +1,16 @@
+
+lottoland/.idea/compiler.xml
+lottoland/.idea/encodings.xml
+lottoland/.idea/jarRepositories.xml
+lottoland/.idea/misc.xml
+lottoland/.idea/uiDesigner.xml
+lottoland/.idea/vcs.xml
+lottoland/HELP.md
+lottoland/target/classes/application.properties
+lottoland/target/classes/com/lottoland/application/service/GameService.class
+lottoland/target/classes/com/lottoland/domain/api/Move.class
+lottoland/target/classes/com/lottoland/domain/api/RoundDTO.class
+lottoland/target/classes/com/lottoland/domain/api/RoundsPerSingleSessionDTO.class
+lottoland/target/classes/com/lottoland/infrastructure/rest/GameController.class
+lottoland/target/classes/com/lottoland/LottolandApplication.class
+lottoland/target/test-classes/com/lottoland/service/GameServiceTests.class
