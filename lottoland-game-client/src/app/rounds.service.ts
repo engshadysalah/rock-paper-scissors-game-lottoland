@@ -11,4 +11,17 @@ export class RoundsService {
 
   constructor(private http: HttpClient) { }
 
+
+  playAndGetAllRoundsDetailsPerSingleSession(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/play`);
+  }
+
+  restartGame(): Observable<any> {
+    return this.http.post(`${this.baseUrl}/restart`, null);
+  }
+
+  getAllRoundsForAllSessions(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get/allRoundsPerSingleSession`);
+  }
+
 }
