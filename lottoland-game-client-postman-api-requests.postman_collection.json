@@ -41,7 +41,7 @@
 			"response": []
 		},
 		{
-			"name": "allRoundsResultForAllSessions",
+			"name": "allRoundsTotlalResultsForAllSessions",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
