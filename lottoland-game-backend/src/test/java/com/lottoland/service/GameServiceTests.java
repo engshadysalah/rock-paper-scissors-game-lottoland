@@ -114,10 +114,32 @@ class GameServiceTests {
 
         Assertions.assertNotNull(roundsPerSingleSessionDTOSession,"The Round shouldn't be null");
         Assertions.assertEquals(actualRoundNumbersPerSingleSession, 1,"Then Round number should be 1");
-        Assertions.assertEquals(expectedFirstPlayerMove, true,"The random first play move should be value of [Paper, Scissors, Rock]");
+        Assertions.assertTrue(expectedFirstPlayerMove,"The random first play move should be value of [Paper, Scissors, Rock]");
         Assertions.assertEquals(actualSecondPlayerMove,  expectedSecondPlayerMove,"The random second play move should be value of [Rock]");
         Assertions.assertEquals(actualRoundResult, expectedRoundResultAfterMoving,"The Round Result should be value of [Player 1, Player 2, Draw]");
 
+    }
+
+    @Test
+    @DisplayName("Restart Game Per Single Session User, Positive Case")
+    void restartGameTestSuccess() {
+
+        playAndGetAllRoundsDetailsPerSingleSessionTest();
+
+        RoundsPerSingleSessionDTO acualRoundsPerSingleSessionDTO = gameService.restartGame(sessionIdUser1);
+
+        boolean actualRoundIsRestarted = acualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).isRestarted();
+
+        Assertions.assertTrue(actualRoundIsRestarted,"The Round shouldn be restarted");
+    }
+
+    @Test
+    @DisplayName("Restart Game Per Single Session User, Negative Case")
+    void restartGameTestFailed() {
+
+        RoundsPerSingleSessionDTO acualRoundsPerSingleSessionDTO = gameService.restartGame(sessionIdUser1);
+
+        Assertions.assertEquals(acualRoundsPerSingleSessionDTO.getRoundNumbersPerSingleSession(), 0,"The single user session should has rounds");
     }
 
     private boolean validateOnPlayerMove(String playerMove){

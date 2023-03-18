@@ -28,11 +28,11 @@ public class GameController {
 
 
 	@PostMapping(path = "/restart")
-	public void restartGame(HttpServletRequest request) {
+	public RoundsPerSingleSessionDTO restartGame(HttpServletRequest request) {
 
 		String sessionId = request.getSession().getId();
 
-		gameService.restartGame(sessionId);
+		return gameService.restartGame(sessionId);
 	}
 
 
