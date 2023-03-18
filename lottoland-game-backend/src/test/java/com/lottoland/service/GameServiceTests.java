@@ -281,7 +281,7 @@ class GameServiceTests {
 
         Assertions.assertEquals(expectedTotalRoundsPlayed.intValue(), 1,"The Total Rounds should be 1");
     }
-    
+
     private boolean validateOnPlayerMove(String playerMove){
 
         if(playerMove.equals(Move.PAPER.getValue()) || playerMove.equals(Move.SCISSORS.getValue()) ||
