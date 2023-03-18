@@ -11,8 +11,21 @@ import java.util.stream.Collectors;
 @Service
 public class GameService {
 
+    // This map holds session id for each user and his all game rounds and the game rounds that restarted.
     HashMap<String, RoundsPerSingleSessionDTO> allRoundsForAllSessions = new HashMap<>();
 
+    /**
+     * Execution: This service will be executed when a player click on "Play Round" button that will play an automatic round
+     * The scenario that implemented: There will be 2 kinds of players, one should always choose randomly, the other should always choose rock.
+     * Returns an RoundsPerSingleSessionDTO object that hold the following data for specific user session
+     * based on the @parameter sessionId that comes from the client side:
+     * ◦ Total rounds number
+     * ◦ the rounds played, with 3 columns:
+     * ◦   what 1st player chose,
+     * ◦   what second chose,
+     * •   and the result of the round (that could be player 1 wins, player 2 wins or draw)
+     * @return   RoundsPerSingleSessionDTO object that holds all of the above data
+     */
     public RoundsPerSingleSessionDTO playAndGetAllRoundsDetailsPerSingleSession(String sessionId) {
 
         String firstPlayerRandomMove = getFirstPlayerRandomMove();
@@ -24,6 +37,13 @@ public class GameService {
         return getAllRoundsDetailsPerSingleSession(currentRoundDTO, sessionId);
     }
 
+    /**
+     * Execution: This service will be executed when a player click on "Restart" button that will restart the game per single session user.
+     * The scenario that implemented: getting the RoundsPerSingleSessionDTO object per single session user that hold
+     * ◦ roundNumbersPerSingleSession
+     * ◦ List<RoundDTO> allRoundsPerSingleSession that holds all the game rounds details that not started per single user session.
+     * Then update the isPresent for each round to be restarted.
+     */
     public void restartGame(String sessionId) {
 
         Optional <RoundsPerSingleSessionDTO> allRoundsPerSingleSession = Optional.ofNullable(allRoundsForAllSessions.get(sessionId));
@@ -37,7 +57,6 @@ public class GameService {
 
         }
     }
-
 
     /**
     * Returns an HashMap object that hold
@@ -89,12 +108,23 @@ public class GameService {
         return getAllRoundsResultsForAllSessions;
     }
 
+    /**
+     * The scenario that implemented: always choose random play for the First player [Computer as a player], the other should always choose rock.
+     * @return a String that refer to the random play
+     */
     private String getFirstPlayerRandomMove() {
         Random random = new Random();
         int randomNumber = random.nextInt(3);
         return  Move.values()[randomNumber].getValue();
     }
 
+    /**
+     * @return an RoundsPerSingleSessionDTO object that hold
+     * ◦ roundNumbersPerSingleSession
+     * ◦ List<RoundDTO> allRoundsPerSingleSession that holds all the game rounds details that not started per single user session.
+     * First step is getting the allRoundsPerSingleSession of specific user by his sessionId from the allRoundsForAllSessions map, but
+     * in case not founded in the map then, it will be added into the map at the end.
+     */
     private RoundsPerSingleSessionDTO getAllRoundsDetailsPerSingleSession(RoundDTO currentRoundDTO, String sessionId) {
 
         RoundsPerSingleSessionDTO roundsPerSingleSessionDTO = new RoundsPerSingleSessionDTO();
@@ -105,7 +135,7 @@ public class GameService {
             roundsPerSingleSessionDTO = allRoundsPerSingleSession.get();
         }
 
-        setRoundNumbersPerSingleSession(roundsPerSingleSessionDTO.getAllRoundsPerSingleSession(), roundsPerSingleSessionDTO);
+        calculateRoundNumbersPerSingleSession(roundsPerSingleSessionDTO.getAllRoundsPerSingleSession(), roundsPerSingleSessionDTO);
  
         roundsPerSingleSessionDTO.getAllRoundsPerSingleSession().add(currentRoundDTO);
 
@@ -114,6 +144,14 @@ public class GameService {
         return getAllNotRestartedRoundsDetailsPerSingleSession(roundsPerSingleSessionDTO, sessionId);
     }
 
+    /**
+     * The scenario that implemented: Getting the round result based on There will be 2 kinds of players, one should always choose randomly,
+     * and the other should always choose rock.
+     * @return [Paper, Scissors, or Rock] based on the [Rock-paper-scissors] game rules as the following:
+     * ◦ If [Paper, Rock] then who played 1 winning
+     * ◦ If [Scissors, Rock] then who played 2 winning
+     * ◦ If [Rock, Rock] then Draw
+     */
     private String getRoundResultAfterMoving(String firstPlayerRandomMove){
 
         if(firstPlayerRandomMove.equals(Move.PAPER.getValue())){
@@ -126,7 +164,10 @@ public class GameService {
         return RoundDTO.DRAW;
     }
 
-    private void setRoundNumbersPerSingleSession(List<RoundDTO> allRoundsPerSingleSession, RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
+    /**
+     * This method used to calculate the game rounds numbers for a single user session.
+     */
+    private void calculateRoundNumbersPerSingleSession(List<RoundDTO> allRoundsPerSingleSession, RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
 
         Optional<List <RoundDTO>>  allRoundsPerSingleSessionOptional = Optional.ofNullable(allRoundsPerSingleSession);
 
@@ -138,6 +179,9 @@ public class GameService {
         }
     }
 
+    /**
+     * This method is used to filter the game rounds per single session user to get just only the rounds that not restarted.
+     */
     private RoundsPerSingleSessionDTO getAllNotRestartedRoundsDetailsPerSingleSession(RoundsPerSingleSessionDTO roundsPerSingleSessionDTO, String sessionId){
 
         List<RoundDTO> notRestartedRounds = roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()
