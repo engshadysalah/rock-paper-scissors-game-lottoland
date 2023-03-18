@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "fa501833-c4ef-4d13-964a-5941fd5da919",
+		"name": "lottoland-game-client-postman-api-requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5650523"
+	},
+	"item": [
+		{
+			"name": "playAndGetAllRoundsDetailsPerSingleSession when click Play Round button",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/game/play",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"game",
+						"play"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "allRoundsResultForAllSessions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/game/get/allRoundsResultForAllSessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"game",
+						"get",
+						"allRoundsResultForAllSessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restartGame",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/game/restart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"game",
+						"restart"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
