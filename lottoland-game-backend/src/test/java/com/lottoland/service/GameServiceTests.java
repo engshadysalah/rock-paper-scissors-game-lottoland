@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @SpringBootTest
@@ -90,102 +91,6 @@ class GameServiceTests {
 
     }
 
-    @Test
-    @DisplayName("Play And Get All Rounds Result Per Single Session")
-    void playAndGetAllRoundsDetailsPerSingleSessionTest() {
-
-        RoundsPerSingleSessionDTO  roundsPerSingleSessionDTOSession  = gameService.playAndGetAllRoundsDetailsPerSingleSession(sessionIdUser1);
-
-        int actualRoundNumbersPerSingleSession = roundsPerSingleSessionDTOSession.getRoundNumbersPerSingleSession();
-
-        String actualFirstPlayerMove = roundsPerSingleSessionDTOSession.getAllRoundsPerSingleSession().get(0).getFirstPlayerMove();
-        String actualSecondPlayerMove = roundsPerSingleSessionDTOSession.getAllRoundsPerSingleSession().get(0).getSecondPlayerMove();
-        String actualRoundResult = roundsPerSingleSessionDTOSession.getAllRoundsPerSingleSession().get(0).getRoundResult();
-
-        boolean expectedFirstPlayerMove = validateOnPlayerMove(actualFirstPlayerMove);
-        String expectedSecondPlayerMove = Move.ROCK.getValue();
-        String expectedRoundResultAfterMoving = getExpectedRoundResultAfterMoving(actualFirstPlayerMove);
-
-
-        Assertions.assertNotNull(roundsPerSingleSessionDTOSession,"The Round shouldn't be null");
-        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 1");
-        Assertions.assertTrue(expectedFirstPlayerMove,"The random first play move should be value of [Paper, Scissors, Rock]");
-        Assertions.assertEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
-        Assertions.assertEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 1, Player 2, Draw]");
-
-    }
-
-    @Test
-    @DisplayName("Restart Game Per Single Session User")
-    void restartGameTest() {
-
-        RoundsPerSingleSessionDTO acualRoundsPerSingleSessionDTO = gameService.restartGame(sessionIdUser1);
-
-        boolean actualRoundIsRestarted = acualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).isRestarted();
-
-        Assertions.assertTrue(actualRoundIsRestarted,"The Round shouldn be restarted");
-    }
-
-    @Test
-    @DisplayName("Play 1 automatic move")
-    void getFirstPlayerRandomMoveTest() {
-
-        String actualPlayerRandomMove = gameService.getFirstPlayerRandomMove();
-
-        boolean expectedResult = validateOnPlayerMove(actualPlayerRandomMove);
-
-        Assertions.assertTrue(expectedResult,"The random play move should be value of [Paper, Scissors, Rock]");
-    }
-
-    @Test
-    @DisplayName("Getting All Rounds Details Per Single User Session Test, Positive Case")
-    void getAllRoundsDetailsPerSingleSessionTestSuccess() {
-
-        RoundsPerSingleSessionDTO actualRoundsPerSingleSessionDTO = gameService.getAllRoundsDetailsPerSingleSession(roundDTOSecondPlayerWinnerSessionUser1, sessionIdUser1);
-
-        int actualRoundNumbersPerSingleSession = actualRoundsPerSingleSessionDTO.getRoundNumbersPerSingleSession();
-
-        String actualFirstPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getFirstPlayerMove();
-        String actualSecondPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getSecondPlayerMove();
-        String actualRoundResult = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getRoundResult();
-
-        String expectedFirstPlayerMove = Move.SCISSORS.getValue();
-        String expectedSecondPlayerMove = Move.ROCK.getValue();
-        String expectedRoundResultAfterMoving = RoundDTO.SECOND_PLAYER;
-
-        Assertions.assertNotNull(actualRoundsPerSingleSessionDTO,"The Round shouldn't be null");
-        Assertions.assertEquals(2, actualRoundNumbersPerSingleSession,"The Round number should be 2");
-
-        Assertions.assertEquals(expectedFirstPlayerMove, actualFirstPlayerMove,"The random first play move should be value of [Scissors]");
-        Assertions.assertEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
-        Assertions.assertEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 2]");
-
-    }
-
-    @Test
-    @DisplayName("Getting All Rounds Details Per Single User Session Test, Negative Case")
-    void getAllRoundsDetailsPerSingleSessionTestFailed() {
-
-        RoundsPerSingleSessionDTO actualRoundsPerSingleSessionDTO = gameService.getAllRoundsDetailsPerSingleSession(roundDTOSecondPlayerWinnerSessionUser1, sessionIdUser1);
-
-        int actualRoundNumbersPerSingleSession = actualRoundsPerSingleSessionDTO.getRoundNumbersPerSingleSession();
-
-        String actualFirstPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getFirstPlayerMove();
-        String actualSecondPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getSecondPlayerMove();
-        String actualRoundResult = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getRoundResult();
-
-        String expectedFirstPlayerMove = Move.PAPER.getValue();
-        String expectedSecondPlayerMove = Move.SCISSORS.getValue();
-        String expectedRoundResultAfterMoving = RoundDTO.FIRST_PLAYER;
-
-        Assertions.assertNotNull(actualRoundsPerSingleSessionDTO,"The Round shouldn't be null");
-        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 1");
-
-        Assertions.assertNotEquals(expectedFirstPlayerMove, actualFirstPlayerMove,"The random first play move should be value of [Scissors]");
-        Assertions.assertNotEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
-        Assertions.assertNotEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 2]");
-
-    }
 
     @Test
     @DisplayName("Calculate the round numbers per single user session Test")
@@ -268,6 +173,115 @@ class GameServiceTests {
 
         Assertions.assertEquals(expectedRoundWinner, actualRoundWinner, "The round result should be [Draw]]");
     }
+
+    @Test
+    @DisplayName("Play 1 automatic move")
+    void getFirstPlayerRandomMoveTest() {
+
+        String actualPlayerRandomMove = gameService.getFirstPlayerRandomMove();
+
+        boolean expectedResult = validateOnPlayerMove(actualPlayerRandomMove);
+
+        Assertions.assertTrue(expectedResult,"The random play move should be value of [Paper, Scissors, Rock]");
+    }
+
+    @Test
+    @DisplayName("Play And Get All Rounds Result Per Single Session")
+    void playAndGetAllRoundsDetailsPerSingleSessionTest() {
+
+        RoundsPerSingleSessionDTO  roundsPerSingleSessionDTOSession  = gameService.playAndGetAllRoundsDetailsPerSingleSession(sessionIdUser1);
+
+        int actualRoundNumbersPerSingleSession = roundsPerSingleSessionDTOSession.getRoundNumbersPerSingleSession();
+
+        String actualFirstPlayerMove = roundsPerSingleSessionDTOSession.getAllRoundsPerSingleSession().get(0).getFirstPlayerMove();
+        String actualSecondPlayerMove = roundsPerSingleSessionDTOSession.getAllRoundsPerSingleSession().get(0).getSecondPlayerMove();
+        String actualRoundResult = roundsPerSingleSessionDTOSession.getAllRoundsPerSingleSession().get(0).getRoundResult();
+
+        boolean expectedFirstPlayerMove = validateOnPlayerMove(actualFirstPlayerMove);
+        String expectedSecondPlayerMove = Move.ROCK.getValue();
+        String expectedRoundResultAfterMoving = getExpectedRoundResultAfterMoving(actualFirstPlayerMove);
+
+
+        Assertions.assertNotNull(roundsPerSingleSessionDTOSession,"The Round shouldn't be null");
+        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 1");
+        Assertions.assertTrue(expectedFirstPlayerMove,"The random first play move should be value of [Paper, Scissors, Rock]");
+        Assertions.assertEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
+        Assertions.assertEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 1, Player 2, Draw]");
+
+    }
+
+    @Test
+    @DisplayName("Restart Game Per Single Session User")
+    void restartGameTest() {
+
+        RoundsPerSingleSessionDTO acualRoundsPerSingleSessionDTO = gameService.restartGame(sessionIdUser1);
+
+        boolean actualRoundIsRestarted = acualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).isRestarted();
+
+        Assertions.assertTrue(actualRoundIsRestarted,"The Round shouldn be restarted");
+    }
+
+    @Test
+    @DisplayName("Getting All Rounds Details Per Single User Session Test, Positive Case")
+    void getAllRoundsDetailsPerSingleSessionTestSuccess() {
+
+        RoundsPerSingleSessionDTO actualRoundsPerSingleSessionDTO = gameService.getAllRoundsDetailsPerSingleSession(roundDTOSecondPlayerWinnerSessionUser1, sessionIdUser1);
+
+        int actualRoundNumbersPerSingleSession = actualRoundsPerSingleSessionDTO.getRoundNumbersPerSingleSession();
+
+        String actualFirstPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getFirstPlayerMove();
+        String actualSecondPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getSecondPlayerMove();
+        String actualRoundResult = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getRoundResult();
+
+        String expectedFirstPlayerMove = Move.SCISSORS.getValue();
+        String expectedSecondPlayerMove = Move.ROCK.getValue();
+        String expectedRoundResultAfterMoving = RoundDTO.SECOND_PLAYER;
+
+        Assertions.assertNotNull(actualRoundsPerSingleSessionDTO,"The Round shouldn't be null");
+        Assertions.assertEquals(2, actualRoundNumbersPerSingleSession,"The Round number should be 2");
+
+        Assertions.assertEquals(expectedFirstPlayerMove, actualFirstPlayerMove,"The random first play move should be value of [Scissors]");
+        Assertions.assertEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
+        Assertions.assertEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 2]");
+
+    }
+
+    @Test
+    @DisplayName("Getting All Rounds Details Per Single User Session Test, Negative Case")
+    void getAllRoundsDetailsPerSingleSessionTestFailed() {
+
+        RoundsPerSingleSessionDTO actualRoundsPerSingleSessionDTO = gameService.getAllRoundsDetailsPerSingleSession(roundDTOSecondPlayerWinnerSessionUser1, sessionIdUser1);
+
+        int actualRoundNumbersPerSingleSession = actualRoundsPerSingleSessionDTO.getRoundNumbersPerSingleSession();
+
+        String actualFirstPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getFirstPlayerMove();
+        String actualSecondPlayerMove = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getSecondPlayerMove();
+        String actualRoundResult = actualRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getRoundResult();
+
+        String expectedFirstPlayerMove = Move.PAPER.getValue();
+        String expectedSecondPlayerMove = Move.SCISSORS.getValue();
+        String expectedRoundResultAfterMoving = RoundDTO.FIRST_PLAYER;
+
+        Assertions.assertNotNull(actualRoundsPerSingleSessionDTO,"The Round shouldn't be null");
+        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 1");
+
+        Assertions.assertNotEquals(expectedFirstPlayerMove, actualFirstPlayerMove,"The random first play move should be value of [Scissors]");
+        Assertions.assertNotEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
+        Assertions.assertNotEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 2]");
+
+    }
+
+    @Test
+    @DisplayName("Getting All Rounds Total For All The User Sessions")
+    void getAllRoundsResultForAllSessionsTest(){
+
+        HashMap<String, AtomicInteger>  expectedResult =  gameService.getAllRoundsResultForAllSessions();
+
+        AtomicInteger expectedTotalRoundsPlayed = expectedResult.get(RoundDTO.TOTAL_ROUNDS_PLAYED);
+
+        Assertions.assertEquals(expectedTotalRoundsPlayed.intValue(), 1,"The Total Rounds should be 1");
+    }
+    
     private boolean validateOnPlayerMove(String playerMove){
 
         if(playerMove.equals(Move.PAPER.getValue()) || playerMove.equals(Move.SCISSORS.getValue()) ||
