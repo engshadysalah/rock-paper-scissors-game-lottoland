@@ -36,9 +36,9 @@ public class GameController {
 	}
 
 
-	@GetMapping (path = "/get/allRoundsPerSingleSession")
-	public HashMap<String, AtomicInteger> getAllRoundsForAllSessions() {
+	@GetMapping (path = "/get/allRoundsResultForAllSessions")
+	public HashMap<String, AtomicInteger> getAllRoundsResultForAllSessions() {
 
-		return gameService.getAllRoundsForAllSessions();
+		return gameService.getAllRoundsResultForAllSessions();
 	}
 }

@@ -72,7 +72,7 @@ public class GameService {
     * totalDraws, and totalRoundsPlayed then adding them into getAllRoundsResultsForAllSessions map.
     * @return   getAllRoundsResultsForAllSessions map
     */
-    public HashMap<String, AtomicInteger> getAllRoundsForAllSessions() {
+    public HashMap<String, AtomicInteger> getAllRoundsResultForAllSessions() {
 
         HashMap<String, AtomicInteger> getAllRoundsResultsForAllSessions = new HashMap<>();
 
