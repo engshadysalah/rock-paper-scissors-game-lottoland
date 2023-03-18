@@ -112,7 +112,7 @@ public class GameService {
      * The scenario that implemented: always choose random play for the First player [Computer as a player], the other should always choose rock.
      * @return a String that refer to the random play
      */
-    private String getFirstPlayerRandomMove() {
+    public String getFirstPlayerRandomMove() {
         Random random = new Random();
         int randomNumber = random.nextInt(3);
         return  Move.values()[randomNumber].getValue();
@@ -125,7 +125,7 @@ public class GameService {
      * First step is getting the allRoundsPerSingleSession of specific user by his sessionId from the allRoundsForAllSessions map, but
      * in case not founded in the map then, it will be added into the map at the end.
      */
-    private RoundsPerSingleSessionDTO getAllRoundsDetailsPerSingleSession(RoundDTO currentRoundDTO, String sessionId) {
+    public RoundsPerSingleSessionDTO getAllRoundsDetailsPerSingleSession(RoundDTO currentRoundDTO, String sessionId) {
 
         RoundsPerSingleSessionDTO roundsPerSingleSessionDTO = new RoundsPerSingleSessionDTO();
 
@@ -182,7 +182,7 @@ public class GameService {
     /**
      * This method is used to filter the game rounds per single session user to get just only the rounds that not restarted.
      */
-    private RoundsPerSingleSessionDTO getAllNotRestartedRoundsDetailsPerSingleSession(RoundsPerSingleSessionDTO roundsPerSingleSessionDTO, String sessionId){
+    public RoundsPerSingleSessionDTO getAllNotRestartedRoundsDetailsPerSingleSession(RoundsPerSingleSessionDTO roundsPerSingleSessionDTO, String sessionId){
 
         List<RoundDTO> notRestartedRounds = roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()
                 .stream()
