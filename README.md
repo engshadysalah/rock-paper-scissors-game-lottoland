@@ -51,14 +51,35 @@ curl --location --request POST 'http://localhost:8080/api/v1/game/restart' \
 
 [3]. get/allRoundsResultForAllSessions reuest, 
 * That used to returns  an HashMap object that hold
-    * ◦ Total rounds played
-    * ◦ Total Wins for first players
-    * ◦ Total Wins for second players
-    * ◦ Total draws
-    * • These totals should consider all the rounds of all the games played by all users.
+    * Total rounds played
+    * Total Wins for first players
+    * Total Wins for second players
+    * Total draws
+    * These totals should consider all the rounds of all the games played by all users.
     *   (even if we clicked in "Restart button", these games should be considered as well)
 
    ``` sh
       curl --location 'http://localhost:8080/api/v1/game/get/allRoundsResultForAllSessions' \
    --header 'Cookie: JSESSIONID=78336BF5642FB4A77757917EE0A08712' \
    --data ''
+
+
+## How can the Game be tasted
+The frontend not finish yet, so You can test the game by having 3 different users session:
+* Normal Browser Window, 
+   * Access the url for first request: [http://localhost:8080/api/v1/game/play] to play game and return round results.
+
+   * Access The Url for the third request [http://localhost:8080/api/v1/game/get/allRoundsResultForAllSessions] to get Total rounds played, Total Wins for first players, Total Wins for second players, and Total draws the rounds for all of the user sessions.
+
+
+* Incognito windo in the Browser, and access the url for first request: [http://localhost:8080/api/v1/game/play]
+   * Access the url for first request: [http://localhost:8080/api/v1/game/play] to play game and return round results.
+
+   * Access The Url for the third request [http://localhost:8080/api/v1/game/get/allRoundsResultForAllSessions] to get Total rounds played, Total Wins for first players, Total Wins for second players, and Total draws the rounds for all of the user sessions.
+
+* Postman Collections [lottoland-game-client-postman-api-requests.postman_collection] in the parent directory of the project [/rock-paper-scissors-game-lottoland]:
+   * Send the first request [playAndGetAllRoundsDetailsPerSingleSession], to play game and return round results.
+   * Send the second request [allRoundsTotlalResultsForAllSessions], to restart the game.
+   * Send the third request [restartGame], to get Total rounds played, Total Wins for first players, Total Wins for second players, and Total draws the rounds for all of the user sessions.
+
+
