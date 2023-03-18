@@ -54,6 +54,7 @@ class GameServiceTests {
         roundDTOSecondDrawSessionUser1 = new RoundDTO();
         roundDTOSecondDrawSessionUser1.setFirstPlayerMove(Move.ROCK.getValue());
         roundDTOSecondDrawSessionUser1.setRoundResult(RoundDTO.DRAW);
+        roundDTOSecondDrawSessionUser1.setRestarted(true);
 
         allRoundsPerSingleSessionUser1 =new ArrayList<>();
         allRoundsPerSingleSessionUser1.add(roundDTOFirstPlayerWinnerSessionUser1);
@@ -231,7 +232,47 @@ class GameServiceTests {
 
         int actualRoundNumbersPerSingleSession = roundsPerSingleSessionDTOUser1.getRoundNumbersPerSingleSession();
 
-        Assertions.assertEquals(4, actualRoundNumbersPerSingleSession,"The Round number should be 4");
+        Assertions.assertEquals(4, actualRoundNumbersPerSingleSession,"The Rounds number should be 4");
+
+    }
+
+    @Test
+    @DisplayName("Get All Not Restarted Rounds Details per single user session Test")
+    void getAllNotRestartedRoundsDetailsPerSingleSessionTest() {
+
+        RoundsPerSingleSessionDTO expectedRoundsPerSingleSessionDTO = gameService.getAllNotRestartedRoundsDetailsPerSingleSession(roundsPerSingleSessionDTOUser1, sessionIdUser1);
+
+        int expectedNotRestartedRoundNumbersPerSingleSession = expectedRoundsPerSingleSessionDTO.getRoundNumbersPerSingleSession();
+
+        String actualFirstPlayerMoveRound1 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getFirstPlayerMove();
+        String actualSecondPlayerMoveRound1 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getSecondPlayerMove();
+        String actualRoundResultRound1 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).getRoundResult();
+        boolean actualIsRestartedRound1 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(0).isRestarted();
+
+        String actualFirstPlayerMoveRound2 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(1).getFirstPlayerMove();
+        String actualSecondPlayerMoveRound2 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(1).getSecondPlayerMove();
+        String actualRoundResultRound2 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(1).getRoundResult();
+        boolean actualIsRestartedRound2 = expectedRoundsPerSingleSessionDTO.getAllRoundsPerSingleSession().get(1).isRestarted();
+
+        String expectedFirstPlayerMoveRound1 = Move.PAPER.getValue();
+        String expectedSecondPlayerMoveRound1 = Move.ROCK.getValue();
+        String expectedRoundResultAfterMovingRound1 = RoundDTO.FIRST_PLAYER;
+
+        String expectedFirstPlayerMoveRound2 = Move.SCISSORS.getValue();
+        String expectedSecondPlayerMoveRound2 = Move.ROCK.getValue();
+        String expectedRoundResultAfterMovingRound2 = RoundDTO.SECOND_PLAYER;
+
+        Assertions.assertEquals(2, expectedNotRestartedRoundNumbersPerSingleSession,"The Rounds number should be 2");
+
+        Assertions.assertEquals(expectedFirstPlayerMoveRound1, actualFirstPlayerMoveRound1, "[Round1] The first play move should be value of [Paper]");
+        Assertions.assertEquals(expectedSecondPlayerMoveRound1, actualSecondPlayerMoveRound1,"[Round1] The random second play move should be value of [Rock]");
+        Assertions.assertEquals(expectedRoundResultAfterMovingRound1, actualRoundResultRound1,"[Round1] The Round Result should be value of [Player 1]");
+        Assertions.assertFalse(actualIsRestartedRound1,"[Round1] The Round isRestarted should be value of [False]");
+
+        Assertions.assertEquals(expectedFirstPlayerMoveRound2, actualFirstPlayerMoveRound2, "[Round2] The first play move should be value of [Paper]");
+        Assertions.assertEquals(expectedSecondPlayerMoveRound2, actualSecondPlayerMoveRound2,"[Round2] The random second play move should be value of [Rock]");
+        Assertions.assertEquals(expectedRoundResultAfterMovingRound2, actualRoundResultRound2,"[Round2] The Round Result should be value of [Player 1]");
+        Assertions.assertFalse(actualIsRestartedRound2,"[Round2] The Round isRestarted should be value of [False]");
 
     }
 
