@@ -5,11 +5,11 @@ import com.lottoland.domain.api.RoundDTO;
 import com.lottoland.domain.api.RoundsPerSingleSessionDTO;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
 public class GameService {
-
 
     HashMap<String, RoundsPerSingleSessionDTO> allRoundsForAllSessions = new HashMap<>();
 
@@ -38,9 +38,55 @@ public class GameService {
         }
     }
 
-    public HashMap<String, RoundsPerSingleSessionDTO> getAllRoundsForAllSessions() {
 
-        return allRoundsForAllSessions;
+    /**
+    * Returns an HashMap object that hold
+    * ◦ Total rounds played
+    * ◦ Total Wins for first players
+    * ◦ Total Wins for second players
+    * ◦ Total draws
+    * • These totals should consider all the rounds of all the games played by all users.
+    *   (even if we clicked in "Restart button", these games should be considered as well)
+    * @explaination of the code: allRoundsForAllSessions hashmap has RoundsPerSingleSessionDTO list of for each user session
+    * Getting all the rounds of all the user sessions List<List<RoundDTO>> by iterating on allRoundsForAllSessions
+    * then filtering on List<List<RoundDTO>> to get the counter for totalWinsForFirstPlayers, totalWinsForSecondPlayers,
+    * totalDraws, and totalRoundsPlayed then adding them into getAllRoundsResultsForAllSessions map.
+    * @return   getAllRoundsResultsForAllSessions map
+    */
+    public HashMap<String, AtomicInteger> getAllRoundsForAllSessions() {
+
+        HashMap<String, AtomicInteger> getAllRoundsResultsForAllSessions = new HashMap<>();
+
+        AtomicInteger totalWinsForFirstPlayers = new AtomicInteger();
+        AtomicInteger totalWinsForSecondPlayers = new AtomicInteger();
+        AtomicInteger totalDraws = new AtomicInteger();
+        AtomicInteger totalRoundsPlayed = new AtomicInteger();
+
+        allRoundsForAllSessions.entrySet()
+                .stream()
+                .map(entry->entry.getValue().getAllRoundsPerSingleSession())
+                .toList()
+                  .forEach(roundListPerSession -> roundListPerSession
+                        .forEach(singleRound->
+                                {
+                                    if (singleRound.getRoundResult().equals(RoundDTO.FIRST_PLAYER)) {
+                                        totalWinsForFirstPlayers.getAndIncrement();
+                                    } else if (singleRound.getRoundResult().equals(RoundDTO.SECOND_PLAYER)) {
+                                        totalWinsForSecondPlayers.getAndIncrement();
+                                    }else {
+                                        totalDraws.getAndIncrement();
+                                    }
+                                    totalRoundsPlayed.getAndIncrement();
+                                })
+
+                     );
+
+        getAllRoundsResultsForAllSessions.put(RoundDTO.TOTAL_ROUNDS_PLAYED, totalRoundsPlayed);
+        getAllRoundsResultsForAllSessions.put(RoundDTO.FIRST_PLAYER, totalWinsForFirstPlayers);
+        getAllRoundsResultsForAllSessions.put(RoundDTO.SECOND_PLAYER, totalWinsForSecondPlayers);
+        getAllRoundsResultsForAllSessions.put(RoundDTO.DRAW, totalDraws);
+
+        return getAllRoundsResultsForAllSessions;
     }
 
     private String getFirstPlayerRandomMove() {

@@ -5,7 +5,7 @@ public class RoundDTO {
     public static final String FIRST_PLAYER = "Player 1";
     public static final String SECOND_PLAYER = "Player 2";
     public static final String  DRAW= "Draw";
-
+    public static final String  TOTAL_ROUNDS_PLAYED= "totalRoundsPlayed";
     private String firstPlayerMove;
     private static final String SECOND_PLAYER_MOVE = Move.ROCK.getValue();
     private String roundResult;
