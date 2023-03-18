@@ -32,7 +32,7 @@ public class GameService {
 
         RoundDTO currentRoundDTO = new RoundDTO();
         currentRoundDTO.setFirstPlayerMove(firstPlayerRandomMove);
-        currentRoundDTO.setRoundResult(getRoundResultAfterMoving(firstPlayerRandomMove));
+        currentRoundDTO.setRoundResult(getRoundWinnerAfterFirstPlayerMove(firstPlayerRandomMove));
 
         return getAllRoundsDetailsPerSingleSession(currentRoundDTO, sessionId);
     }
@@ -155,7 +155,7 @@ public class GameService {
      * ◦ If [Scissors, Rock] then who played 2 winning
      * ◦ If [Rock, Rock] then Draw
      */
-    private String getRoundResultAfterMoving(String firstPlayerRandomMove){
+    public String getRoundWinnerAfterFirstPlayerMove(String firstPlayerRandomMove){
 
         if(firstPlayerRandomMove.equals(Move.PAPER.getValue())){
             return RoundDTO.FIRST_PLAYER;
