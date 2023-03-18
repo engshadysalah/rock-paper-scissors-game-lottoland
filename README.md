@@ -29,3 +29,36 @@
    npm install
    ng serve
    ```
+
+## API Requests
+The backend [lottoland-game-backend] provides 3 API requests, Please find the post man collection taht can be used test the Rest API [lottoland-game-client-postman-api-requests.postman_collection] in the parent directory of the project [/rock-paper-scissors-game-lottoland]
+
+[1]: play reuest, That used to play a new round per session, it returns all the roundes  and the rounds number as well for the currunt session, 
+
+   ```sh
+curl --location 'http://localhost:8080/api/v1/game/play' \
+--header 'Cookie: JSESSIONID=78336BF5642FB4A77757917EE0A08712' \
+--data ''
+   ```
+
+  
+[2]: restart request, That used to restart the game per session, so it will clear all the current rounds.
+   ```sh
+curl --location --request POST 'http://localhost:8080/api/v1/game/restart' \
+--header 'Cookie: JSESSIONID=78336BF5642FB4A77757917EE0A08712'
+   ```
+
+
+[3]. get/allRoundsResultForAllSessions reuest, 
+* That used to returns  an HashMap object that hold
+    * ◦ Total rounds played
+    * ◦ Total Wins for first players
+    * ◦ Total Wins for second players
+    * ◦ Total draws
+    * • These totals should consider all the rounds of all the games played by all users.
+    *   (even if we clicked in "Restart button", these games should be considered as well)
+
+   ``` sh
+      curl --location 'http://localhost:8080/api/v1/game/get/allRoundsResultForAllSessions' \
+   --header 'Cookie: JSESSIONID=78336BF5642FB4A77757917EE0A08712' \
+   --data ''
