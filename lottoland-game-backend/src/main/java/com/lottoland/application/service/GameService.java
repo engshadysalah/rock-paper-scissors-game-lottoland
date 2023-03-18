@@ -170,9 +170,9 @@ public class GameService {
     /**
      * This method used to calculate the game rounds numbers for a single user session.
      */
-    private void calculateRoundNumbersPerSingleSession(List<RoundDTO> allRoundsPerSingleSession, RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
+    public void calculateRoundNumbersPerSingleSession(List<RoundDTO> allRoundsPerSingleSession, RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
 
-        Optional<List <RoundDTO>>  allRoundsPerSingleSessionOptional = Optional.ofNullable(allRoundsPerSingleSession);
+        Optional<List<RoundDTO>> allRoundsPerSingleSessionOptional = Optional.ofNullable(allRoundsPerSingleSession);
 
         if(allRoundsPerSingleSessionOptional.isPresent()){
             roundsPerSingleSessionDTO.setRoundNumbersPerSingleSession(roundsPerSingleSessionDTO.getRoundNumbersPerSingleSession() + 1);

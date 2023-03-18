@@ -111,7 +111,7 @@ class GameServiceTests {
 
 
         Assertions.assertNotNull(roundsPerSingleSessionDTOSession,"The Round shouldn't be null");
-        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"Then Round number should be 1");
+        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 1");
         Assertions.assertTrue(expectedFirstPlayerMove,"The random first play move should be value of [Paper, Scissors, Rock]");
         Assertions.assertEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
         Assertions.assertEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 1, Player 2, Draw]");
@@ -189,7 +189,7 @@ class GameServiceTests {
         String expectedRoundResultAfterMoving = RoundDTO.SECOND_PLAYER;
 
         Assertions.assertNotNull(actualRoundsPerSingleSessionDTO,"The Round shouldn't be null");
-        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"Then Round number should be 2");
+        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 2");
 
         Assertions.assertEquals(expectedFirstPlayerMove, actualFirstPlayerMove,"The random first play move should be value of [Scissors]");
         Assertions.assertEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
@@ -215,11 +215,23 @@ class GameServiceTests {
         String expectedRoundResultAfterMoving = RoundDTO.FIRST_PLAYER;
 
         Assertions.assertNotNull(actualRoundsPerSingleSessionDTO,"The Round shouldn't be null");
-        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"Then Round number should be 2");
+        Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 2");
 
         Assertions.assertNotEquals(expectedFirstPlayerMove, actualFirstPlayerMove,"The random first play move should be value of [Scissors]");
         Assertions.assertNotEquals(expectedSecondPlayerMove, actualSecondPlayerMove,"The random second play move should be value of [Rock]");
         Assertions.assertNotEquals(expectedRoundResultAfterMoving, actualRoundResult,"The Round Result should be value of [Player 2]");
+
+    }
+
+    @Test
+    @DisplayName("Calculate the round numbers per single user session Test")
+    void calculateRoundNumbersPerSingleSessionTest() {
+
+        gameService.calculateRoundNumbersPerSingleSession(allRoundsPerSingleSessionUser1, roundsPerSingleSessionDTOUser1);
+
+        int actualRoundNumbersPerSingleSession = roundsPerSingleSessionDTOUser1.getRoundNumbersPerSingleSession();
+
+        Assertions.assertEquals(4, actualRoundNumbersPerSingleSession,"The Round number should be 4");
 
     }
 
