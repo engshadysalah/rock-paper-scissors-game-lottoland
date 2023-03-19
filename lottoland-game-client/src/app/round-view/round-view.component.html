@@ -1,36 +1,30 @@
-
-
-<h2>the total number of rounds played : <td>{{rounds[0].roundNumbersPerSingleSession}}</td></h2>
-
-
-<button (click)="playGame()"class="btn btn-info" style="margin-left: 10px">Play Game</button>
+  
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-      <h2>Rounds Game Details</h2>
+      <h2>Rounds Game Details For All Users Sessions</h2>
     </div>
     <div class="panel-body">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>First Player Move</th>
-            <th>Second Player Move</th>
-            <th>Round Result</th>
-            <th>Round Numbers</th>
+            <th>Total rounds played</th>
+            <th>Total Wins for first players</th>
+            <th>Total Wins for second players</th>
+            <th>Total draws</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let round of rounds">
-            <td>{{round.allRoundsPerSingleSession.firstPlayerMove}}</td>
-            <td>{{round.allRoundsPerSingleSession.secondPlayerMove}}</td>
-            <td>{{round.allRoundsPerSingleSession.roundResult}}</td>
-            <td>{{round.roundNumbersPerSingleSession}}</td>
+          <tr>
+            <td>{{round?.totalRoundsPlayed}}</td>
+            <td>{{round?.Player_1}}</td>
+            <td>{{round?.Player_2}}</td>
+            <td>{{round?.Draw}}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <button (click)="reStartGame()" class="btn btn-danger"  style="margin-left: 10px">Restart Game</button>
 
   </div>
   

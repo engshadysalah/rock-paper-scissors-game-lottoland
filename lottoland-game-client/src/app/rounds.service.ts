@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RoundsService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/game';
+  private baseUrl = 'http://localhost:8080/api/v1/game/get/allRoundsResultForAllSessions';
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class RoundsService {
   }
 
   getAllRoundsForAllSessions(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/get/allRoundsPerSingleSession`);
+    return this.http.get(`${this.baseUrl}`);
   }
 
 }

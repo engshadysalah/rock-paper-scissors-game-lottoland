@@ -1,9 +1,9 @@
-import { AllRoundsPerSingleSession } from "./rounds-per-single-session";
 
 export class Round {
 
-    roundNumbersPerSingleSession!: number;
- 
-    allRoundsPerSingleSession!: AllRoundsPerSingleSession;
+    Draw!: number;
+    totalRoundsPlayed!: number;
+    Player_1!: number;
+    Player_2!: number;
 
 }
