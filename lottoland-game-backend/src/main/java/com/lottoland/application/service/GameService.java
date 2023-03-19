@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class GameService {
 
     // This map holds session id for each user and his all game rounds and the game rounds that restarted.
-    HashMap<String, RoundsPerSingleSessionDTO> allRoundsForAllSessions = new HashMap<>();
+    public HashMap<String, RoundsPerSingleSessionDTO> allRoundsForAllSessions = new HashMap<>();
 
     /**
      * Execution: This service will be executed when a player click on "Play Round" button that will play an automatic round
@@ -69,7 +69,7 @@ public class GameService {
     * ◦ Total draws
     * • These totals should consider all the rounds of all the games played by all users.
     *   (even if we clicked in "Restart button", these games should be considered as well)
-    * @explaination of the code: allRoundsForAllSessions hashmap has RoundsPerSingleSessionDTO list of for each user session
+    * explaination of the code: allRoundsForAllSessions hashmap has RoundsPerSingleSessionDTO list of for each user session
     * Getting all the rounds of all the user sessions List<List<RoundDTO>> by iterating on allRoundsForAllSessions
     * then filtering on List<List<RoundDTO>> to get the counter for totalWinsForFirstPlayers, totalWinsForSecondPlayers,
     * totalDraws, and totalRoundsPlayed then adding them into getAllRoundsResultsForAllSessions map.
@@ -144,7 +144,7 @@ public class GameService {
 
         allRoundsForAllSessions.put(sessionId, roundsPerSingleSessionDTO);
 
-        return getAllNotRestartedRoundsDetailsPerSingleSession(roundsPerSingleSessionDTO, sessionId);
+        return getAllNotRestartedRoundsDetailsPerSingleSession(roundsPerSingleSessionDTO);
     }
 
     /**
@@ -187,20 +187,16 @@ public class GameService {
     /**
      * This method is used to filter the game rounds per single session user to get just only the rounds that not restarted.
      */
-    public RoundsPerSingleSessionDTO getAllNotRestartedRoundsDetailsPerSingleSession(RoundsPerSingleSessionDTO roundsPerSingleSessionDTO, String sessionId){
+    public RoundsPerSingleSessionDTO getAllNotRestartedRoundsDetailsPerSingleSession(RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
 
         List<RoundDTO> notRestartedRounds = roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()
                 .stream()
                 .filter(value -> !value.isRestarted())
                 .collect(Collectors.toList());
 
-        HashMap<String, RoundsPerSingleSessionDTO> allNotRestartedRoundsForAllSessions = new HashMap<>();
-
         RoundsPerSingleSessionDTO roundsNotRestartedPerSingleSessionDTO = new RoundsPerSingleSessionDTO();
         roundsNotRestartedPerSingleSessionDTO.setAllRoundsPerSingleSession(notRestartedRounds);
         roundsNotRestartedPerSingleSessionDTO.setRoundNumbersPerSingleSession(notRestartedRounds.size());
-
-        allNotRestartedRoundsForAllSessions.put(sessionId, roundsNotRestartedPerSingleSessionDTO);
 
         return roundsNotRestartedPerSingleSessionDTO;
 
