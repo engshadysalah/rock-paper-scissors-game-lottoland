@@ -48,15 +48,12 @@ public class GameService {
 
         Optional <RoundsPerSingleSessionDTO> allRoundsPerSingleSession = Optional.ofNullable(allRoundsForAllSessions.get(sessionId));
 
-        RoundsPerSingleSessionDTO roundsPerSingleSessionDTO = new RoundsPerSingleSessionDTO();
-
         if(allRoundsPerSingleSession.isPresent()) {
-            roundsPerSingleSessionDTO = allRoundsPerSingleSession.get();
+            RoundsPerSingleSessionDTO roundsPerSingleSessionDTO = allRoundsPerSingleSession.get();
 
             for (Round currentRound : roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()) {
                 currentRound.setRestarted(true);
             }
-
         }
     }
 
