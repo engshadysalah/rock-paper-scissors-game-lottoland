@@ -27,7 +27,7 @@ public class GameController {
 	}
 
 
-	@PostMapping(path = "/restart")
+	@PatchMapping(path = "/restart")
 	public void restartGame(HttpServletRequest request) {
 
 		String sessionId = request.getSession().getId();

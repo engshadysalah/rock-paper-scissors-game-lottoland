@@ -7,21 +7,16 @@ import { Observable } from 'rxjs';
 })
 export class RoundsService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/game/get/allRoundsResultForAllSessions';
+  private baseUrl = 'http://localhost:8080/api/v1/game/get';
 
   constructor(private http: HttpClient) { }
 
+  getAllRoundsForAllSessions(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/allRoundsResultForAllSessions`);
+  }
 
   playAndGetAllRoundsDetailsPerSingleSession(): Observable<any> {
     return this.http.get(`${this.baseUrl}/play`);
-  }
-
-  restartGame(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/restart`, null);
-  }
-
-  getAllRoundsForAllSessions(): Observable<any> {
-    return this.http.get(`${this.baseUrl}`);
   }
 
 }
