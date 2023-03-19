@@ -6,13 +6,12 @@ import com.lottoland.domain.api.RoundsPerSingleSessionDTO;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Service
 public class GameService {
 
     // This map holds session id for each user and his all game rounds and the game rounds that restarted.
-    public HashMap<String, RoundsPerSingleSessionDTO> allRoundsForAllSessions = new HashMap<>();
+    protected static final Map<String, RoundsPerSingleSessionDTO> allRoundsForAllSessions = new HashMap<>();
 
     /**
      * Execution: This service will be executed when a player click on "Play Round" button that will play an automatic round
@@ -71,7 +70,7 @@ public class GameService {
     * totalDraws, and totalRoundsPlayed then adding them into getAllRoundsResultsForAllSessions map.
     * @return   getAllRoundsResultsForAllSessions map
     */
-    public HashMap<String, AtomicInteger> getAllRoundsResultForAllSessions() {
+    public Map<String, AtomicInteger> getAllRoundsResultForAllSessions() {
 
         HashMap<String, AtomicInteger> getAllRoundsResultsForAllSessions = new HashMap<>();
 
@@ -112,8 +111,7 @@ public class GameService {
      * @return a String that refer to the random play
      */
     public String getFirstPlayerRandomMove() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(3);
+        int randomNumber = new Random().nextInt(3);
         return  Move.values()[randomNumber].getValue();
     }
 
@@ -188,7 +186,7 @@ public class GameService {
         List<Round> notRestartedRounds = roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()
                 .stream()
                 .filter(value -> !value.isRestarted())
-                .collect(Collectors.toList());
+                .toList();
 
         RoundsPerSingleSessionDTO roundsNotRestartedPerSingleSessionDTO = new RoundsPerSingleSessionDTO();
         roundsNotRestartedPerSingleSessionDTO.setAllRoundsPerSingleSession(notRestartedRounds);

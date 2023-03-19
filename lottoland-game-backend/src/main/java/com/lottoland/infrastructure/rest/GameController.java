@@ -4,7 +4,7 @@ import com.lottoland.application.service.GameService;
 import com.lottoland.domain.api.RoundsPerSingleSessionDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -37,7 +37,7 @@ public class GameController {
 
 
 	@GetMapping (path = "/get/allRoundsResultForAllSessions")
-	public HashMap<String, AtomicInteger> getAllRoundsResultForAllSessions() {
+	public Map<String, AtomicInteger> getAllRoundsResultForAllSessions() {
 
 		return gameService.getAllRoundsResultForAllSessions();
 	}
