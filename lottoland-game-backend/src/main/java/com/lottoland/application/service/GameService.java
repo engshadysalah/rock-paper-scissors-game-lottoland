@@ -44,13 +44,13 @@ public class GameService {
      * ◦ List<Round> allRoundsPerSingleSession that holds all the game rounds details that not started per single user session.
      * Then update the isPresent for each round to be restarted.
      */
-    public RoundsPerSingleSessionDTO restartGame(String sessionId) {
+    public void restartGame(String sessionId) {
 
         Optional <RoundsPerSingleSessionDTO> allRoundsPerSingleSession = Optional.ofNullable(allRoundsForAllSessions.get(sessionId));
 
         RoundsPerSingleSessionDTO roundsPerSingleSessionDTO = new RoundsPerSingleSessionDTO();
 
-        if(allRoundsPerSingleSession.isPresent()){
+        if(allRoundsPerSingleSession.isPresent()) {
             roundsPerSingleSessionDTO = allRoundsPerSingleSession.get();
 
             for (Round currentRound : roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()) {
@@ -58,7 +58,6 @@ public class GameService {
             }
 
         }
-        return roundsPerSingleSessionDTO;
     }
 
     /**
