@@ -23,11 +23,12 @@
 [2]: For the backend [lottoland-game-backend], Just you need to build the project with Maven.
    ```
 
-   ```
+   ```sh
 [3]. For the Frontend, [lottoland-game-client], You need to install packages with npm, then run the project using angular command.
 
    npm install
    ng serve
+   then access this url for the browser [http://localhost:4200/]
    ```
 
 ## API Requests
