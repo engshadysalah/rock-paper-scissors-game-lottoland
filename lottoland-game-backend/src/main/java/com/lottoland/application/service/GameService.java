@@ -1,7 +1,7 @@
 package com.lottoland.application.service;
 
 import com.lottoland.domain.api.Move;
-import com.lottoland.domain.api.RoundDTO;
+import com.lottoland.domain.api.Round;
 import com.lottoland.domain.api.RoundsPerSingleSessionDTO;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -30,18 +30,18 @@ public class GameService {
 
         String firstPlayerRandomMove = getFirstPlayerRandomMove();
 
-        RoundDTO currentRoundDTO = new RoundDTO();
-        currentRoundDTO.setFirstPlayerMove(firstPlayerRandomMove);
-        currentRoundDTO.setRoundResult(getRoundWinnerAfterFirstPlayerMove(firstPlayerRandomMove));
+        Round currentRound = new Round();
+        currentRound.setFirstPlayerMove(firstPlayerRandomMove);
+        currentRound.setRoundResult(getRoundWinnerAfterFirstPlayerMove(firstPlayerRandomMove));
 
-        return getAllRoundsDetailsPerSingleSession(currentRoundDTO, sessionId);
+        return getAllRoundsDetailsPerSingleSession(currentRound, sessionId);
     }
 
     /**
      * Execution: This service will be executed when a player click on "Restart" button that will restart the game per single session user.
      * The scenario that implemented: getting the RoundsPerSingleSessionDTO object per single session user that hold
      * ◦ roundNumbersPerSingleSession
-     * ◦ List<RoundDTO> allRoundsPerSingleSession that holds all the game rounds details that not started per single user session.
+     * ◦ List<Round> allRoundsPerSingleSession that holds all the game rounds details that not started per single user session.
      * Then update the isPresent for each round to be restarted.
      */
     public RoundsPerSingleSessionDTO restartGame(String sessionId) {
@@ -53,7 +53,7 @@ public class GameService {
         if(allRoundsPerSingleSession.isPresent()){
             roundsPerSingleSessionDTO = allRoundsPerSingleSession.get();
 
-            for (RoundDTO currentRound : roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()) {
+            for (Round currentRound : roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()) {
                 currentRound.setRestarted(true);
             }
 
@@ -69,9 +69,9 @@ public class GameService {
     * ◦ Total draws
     * • These totals should consider all the rounds of all the games played by all users.
     *   (even if we clicked in "Restart button", these games should be considered as well)
-    * explaination of the code: allRoundsForAllSessions hashmap has RoundsPerSingleSessionDTO list of for each user session
-    * Getting all the rounds of all the user sessions List<List<RoundDTO>> by iterating on allRoundsForAllSessions
-    * then filtering on List<List<RoundDTO>> to get the counter for totalWinsForFirstPlayers, totalWinsForSecondPlayers,
+    * explanation of the code: allRoundsForAllSessions hashmap has RoundsPerSingleSessionDTO list of for each user session
+    * Getting all the rounds of all the user sessions List<List<Round>> by iterating on allRoundsForAllSessions
+    * then filtering on List<List<Round>> to get the counter for totalWinsForFirstPlayers, totalWinsForSecondPlayers,
     * totalDraws, and totalRoundsPlayed then adding them into getAllRoundsResultsForAllSessions map.
     * @return   getAllRoundsResultsForAllSessions map
     */
@@ -91,9 +91,9 @@ public class GameService {
                   .forEach(roundListPerSession -> roundListPerSession
                         .forEach(singleRound->
                                 {
-                                    if (singleRound.getRoundResult().equals(RoundDTO.FIRST_PLAYER)) {
+                                    if (singleRound.getRoundResult().equals(Round.FIRST_PLAYER)) {
                                         totalWinsForFirstPlayers.getAndIncrement();
-                                    } else if (singleRound.getRoundResult().equals(RoundDTO.SECOND_PLAYER)) {
+                                    } else if (singleRound.getRoundResult().equals(Round.SECOND_PLAYER)) {
                                         totalWinsForSecondPlayers.getAndIncrement();
                                     }else {
                                         totalDraws.getAndIncrement();
@@ -103,10 +103,10 @@ public class GameService {
 
                      );
 
-        getAllRoundsResultsForAllSessions.put(RoundDTO.TOTAL_ROUNDS_PLAYED, totalRoundsPlayed);
-        getAllRoundsResultsForAllSessions.put(RoundDTO.FIRST_PLAYER, totalWinsForFirstPlayers);
-        getAllRoundsResultsForAllSessions.put(RoundDTO.SECOND_PLAYER, totalWinsForSecondPlayers);
-        getAllRoundsResultsForAllSessions.put(RoundDTO.DRAW, totalDraws);
+        getAllRoundsResultsForAllSessions.put(Round.TOTAL_ROUNDS_PLAYED, totalRoundsPlayed);
+        getAllRoundsResultsForAllSessions.put(Round.FIRST_PLAYER, totalWinsForFirstPlayers);
+        getAllRoundsResultsForAllSessions.put(Round.SECOND_PLAYER, totalWinsForSecondPlayers);
+        getAllRoundsResultsForAllSessions.put(Round.DRAW, totalDraws);
 
         return getAllRoundsResultsForAllSessions;
     }
@@ -124,11 +124,11 @@ public class GameService {
     /**
      * @return an RoundsPerSingleSessionDTO object that hold
      * ◦ roundNumbersPerSingleSession
-     * ◦ List<RoundDTO> allRoundsPerSingleSession that holds all the game rounds details that not started per single user session.
+     * ◦ List<Round> allRoundsPerSingleSession that holds all the game rounds details that not started per single user session.
      * First step is getting the allRoundsPerSingleSession of specific user by his sessionId from the allRoundsForAllSessions map, but
      * in case not founded in the map then, it will be added into the map at the end.
      */
-    public RoundsPerSingleSessionDTO getAllRoundsDetailsPerSingleSession(RoundDTO currentRoundDTO, String sessionId) {
+    public RoundsPerSingleSessionDTO getAllRoundsDetailsPerSingleSession(Round currentRound, String sessionId) {
 
         RoundsPerSingleSessionDTO roundsPerSingleSessionDTO = new RoundsPerSingleSessionDTO();
 
@@ -140,7 +140,7 @@ public class GameService {
 
         calculateRoundNumbersPerSingleSession(roundsPerSingleSessionDTO.getAllRoundsPerSingleSession(), roundsPerSingleSessionDTO);
  
-        roundsPerSingleSessionDTO.getAllRoundsPerSingleSession().add(currentRoundDTO);
+        roundsPerSingleSessionDTO.getAllRoundsPerSingleSession().add(currentRound);
 
         allRoundsForAllSessions.put(sessionId, roundsPerSingleSessionDTO);
 
@@ -158,21 +158,21 @@ public class GameService {
     public String getRoundWinnerAfterFirstPlayerMove(String firstPlayerRandomMove){
 
         if(firstPlayerRandomMove.equals(Move.PAPER.getValue())){
-            return RoundDTO.FIRST_PLAYER;
+            return Round.FIRST_PLAYER;
 
         }else if(firstPlayerRandomMove.equals(Move.SCISSORS.getValue())){
-            return RoundDTO.SECOND_PLAYER;
+            return Round.SECOND_PLAYER;
         }
 
-        return RoundDTO.DRAW;
+        return Round.DRAW;
     }
 
     /**
      * This method used to calculate the game rounds numbers for a single user session.
      */
-    public int calculateRoundNumbersPerSingleSession(List<RoundDTO> allRoundsPerSingleSession, RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
+    public int calculateRoundNumbersPerSingleSession(List<Round> allRoundsPerSingleSession, RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
 
-        Optional<List<RoundDTO>> allRoundsPerSingleSessionOptional = Optional.ofNullable(allRoundsPerSingleSession);
+        Optional<List<Round>> allRoundsPerSingleSessionOptional = Optional.ofNullable(allRoundsPerSingleSession);
 
         if(allRoundsPerSingleSessionOptional.isPresent()){
             roundsPerSingleSessionDTO.setRoundNumbersPerSingleSession(roundsPerSingleSessionDTO.getRoundNumbersPerSingleSession() + 1);
@@ -189,7 +189,7 @@ public class GameService {
      */
     public RoundsPerSingleSessionDTO getAllNotRestartedRoundsDetailsPerSingleSession(RoundsPerSingleSessionDTO roundsPerSingleSessionDTO){
 
-        List<RoundDTO> notRestartedRounds = roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()
+        List<Round> notRestartedRounds = roundsPerSingleSessionDTO.getAllRoundsPerSingleSession()
                 .stream()
                 .filter(value -> !value.isRestarted())
                 .collect(Collectors.toList());

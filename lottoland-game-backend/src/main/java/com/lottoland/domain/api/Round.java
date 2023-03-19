@@ -1,6 +1,6 @@
 package com.lottoland.domain.api;
 
-public class RoundDTO {
+public class Round {
 
     public static final String FIRST_PLAYER = "Player_1";
     public static final String SECOND_PLAYER = "Player_2";

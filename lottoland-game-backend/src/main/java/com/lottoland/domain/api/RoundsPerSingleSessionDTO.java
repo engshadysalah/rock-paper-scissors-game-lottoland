@@ -5,7 +5,7 @@ import java.util.List;
 public class RoundsPerSingleSessionDTO {
 
     private int roundNumbersPerSingleSession;
-    private List<RoundDTO> allRoundsPerSingleSession;
+    private List<Round> allRoundsPerSingleSession;
 
     public int getRoundNumbersPerSingleSession() {
         return roundNumbersPerSingleSession;
@@ -15,11 +15,11 @@ public class RoundsPerSingleSessionDTO {
         this.roundNumbersPerSingleSession = roundNumbersPerSingleSession;
     }
 
-    public List<RoundDTO> getAllRoundsPerSingleSession() {
+    public List<Round> getAllRoundsPerSingleSession() {
         return allRoundsPerSingleSession;
     }
 
-    public void setAllRoundsPerSingleSession(List<RoundDTO> allRoundsPerSingleSession) {
+    public void setAllRoundsPerSingleSession(List<Round> allRoundsPerSingleSession) {
         this.allRoundsPerSingleSession = allRoundsPerSingleSession;
     }
 }
