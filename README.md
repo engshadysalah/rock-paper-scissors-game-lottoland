@@ -79,7 +79,7 @@ The frontend not finish yet, so You can test the game by having 3 different user
 
 * Postman Collections [lottoland-game-client-postman-api-requests.postman_collection] in the parent directory of the project [/rock-paper-scissors-game-lottoland]:
    * Send the first request [playAndGetAllRoundsDetailsPerSingleSession], to play game and return round results.
-   * Send the second request [allRoundsTotlalResultsForAllSessions], to restart the game.
-   * Send the third request [restartGame], to get Total rounds played, Total Wins for first players, Total Wins for second players, and Total draws the rounds for all of the user sessions.
+   * Send the second request [restartGame], to restart the game.
+   * Send the third request [allRoundsTotlalResultsForAllSessions], to get Total rounds played, Total Wins for first players, Total Wins for second players, and Total draws the rounds for all of the user sessions.
 
 
