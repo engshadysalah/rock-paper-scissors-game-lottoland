@@ -2,7 +2,7 @@ package com.lottoland.service;
 
 import com.lottoland.application.service.GameService;
 import com.lottoland.domain.api.Move;
-import com.lottoland.domain.api.RoundDTO;
+import com.lottoland.domain.api.Round;
 import com.lottoland.domain.api.RoundsPerSingleSessionDTO;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +28,14 @@ class GameServiceTests {
     HashMap<String, RoundsPerSingleSessionDTO> allRoundsForAllSessions;
     RoundsPerSingleSessionDTO roundsPerSingleSessionDTOUser1;
     RoundsPerSingleSessionDTO roundsPerSingleSessionDTOUser2;
-    List<RoundDTO> allRoundsPerSingleSessionUser1;
-    List<RoundDTO> allRoundsPerSingleSessionUser2;
-    RoundDTO roundDTOFirstPlayerWinnerSessionUser1;
-    RoundDTO roundDTOSecondPlayerWinnerSessionUser1;
-    RoundDTO roundDTOSecondDrawSessionUser1;
-    RoundDTO roundDTOFirstPlayerWinnerSessionUser2;
-    RoundDTO roundDTOSecondPlayerWinnerSessionUser2;
-    RoundDTO roundDTOSecondDrawSessionUser2;
+    List<Round> allRoundsPerSingleSessionUser1;
+    List<Round> allRoundsPerSingleSessionUser2;
+    Round roundFirstPlayerWinnerSessionUser1;
+    Round roundSecondPlayerWinnerSessionUser1;
+    Round roundSecondDrawSessionUser1;
+    Round roundFirstPlayerWinnerSessionUser2;
+    Round roundSecondPlayerWinnerSessionUser2;
+    Round roundSecondDrawSessionUser2;
     private static final int ROUND_NUMBER_PER_SINGLE_SESSION = 3;
     GameService gameServiceMock = mock(GameService.class);
     HashMap<String, AtomicInteger> getAllRoundsResultsForAllSessions;
@@ -47,41 +47,41 @@ class GameServiceTests {
         sessionIdUser1 = "B48CB141D17B7E659E874022F5E000B5";
         sessionIdUser2 = "C48CB141D17B7E659E874022F5E000B6";
 
-        roundDTOFirstPlayerWinnerSessionUser1 = new RoundDTO();
-        roundDTOFirstPlayerWinnerSessionUser1.setFirstPlayerMove(Move.PAPER.getValue());
-        roundDTOFirstPlayerWinnerSessionUser1.setRoundResult(RoundDTO.FIRST_PLAYER);
+        roundFirstPlayerWinnerSessionUser1 = new Round();
+        roundFirstPlayerWinnerSessionUser1.setFirstPlayerMove(Move.PAPER.getValue());
+        roundFirstPlayerWinnerSessionUser1.setRoundResult(Round.FIRST_PLAYER);
 
-        roundDTOSecondPlayerWinnerSessionUser1 = new RoundDTO();
-        roundDTOSecondPlayerWinnerSessionUser1.setFirstPlayerMove(Move.SCISSORS.getValue());
-        roundDTOSecondPlayerWinnerSessionUser1.setRoundResult(RoundDTO.SECOND_PLAYER);
+        roundSecondPlayerWinnerSessionUser1 = new Round();
+        roundSecondPlayerWinnerSessionUser1.setFirstPlayerMove(Move.SCISSORS.getValue());
+        roundSecondPlayerWinnerSessionUser1.setRoundResult(Round.SECOND_PLAYER);
 
-        roundDTOSecondDrawSessionUser1 = new RoundDTO();
-        roundDTOSecondDrawSessionUser1.setFirstPlayerMove(Move.ROCK.getValue());
-        roundDTOSecondDrawSessionUser1.setRoundResult(RoundDTO.DRAW);
-        roundDTOSecondDrawSessionUser1.setRestarted(true);
+        roundSecondDrawSessionUser1 = new Round();
+        roundSecondDrawSessionUser1.setFirstPlayerMove(Move.ROCK.getValue());
+        roundSecondDrawSessionUser1.setRoundResult(Round.DRAW);
+        roundSecondDrawSessionUser1.setRestarted(true);
 
         allRoundsPerSingleSessionUser1 =new ArrayList<>();
-        allRoundsPerSingleSessionUser1.add(roundDTOFirstPlayerWinnerSessionUser1);
-        allRoundsPerSingleSessionUser1.add(roundDTOSecondPlayerWinnerSessionUser1);
-        allRoundsPerSingleSessionUser1.add(roundDTOSecondDrawSessionUser1);
+        allRoundsPerSingleSessionUser1.add(roundFirstPlayerWinnerSessionUser1);
+        allRoundsPerSingleSessionUser1.add(roundSecondPlayerWinnerSessionUser1);
+        allRoundsPerSingleSessionUser1.add(roundSecondDrawSessionUser1);
 
 
-        roundDTOFirstPlayerWinnerSessionUser2 = new RoundDTO();
-        roundDTOFirstPlayerWinnerSessionUser2.setFirstPlayerMove(Move.PAPER.getValue());
-        roundDTOFirstPlayerWinnerSessionUser2.setRoundResult(RoundDTO.FIRST_PLAYER);
+        roundFirstPlayerWinnerSessionUser2 = new Round();
+        roundFirstPlayerWinnerSessionUser2.setFirstPlayerMove(Move.PAPER.getValue());
+        roundFirstPlayerWinnerSessionUser2.setRoundResult(Round.FIRST_PLAYER);
 
-        roundDTOSecondPlayerWinnerSessionUser2 = new RoundDTO();
-        roundDTOSecondPlayerWinnerSessionUser2.setFirstPlayerMove(Move.SCISSORS.getValue());
-        roundDTOSecondPlayerWinnerSessionUser2.setRoundResult(RoundDTO.SECOND_PLAYER);
+        roundSecondPlayerWinnerSessionUser2 = new Round();
+        roundSecondPlayerWinnerSessionUser2.setFirstPlayerMove(Move.SCISSORS.getValue());
+        roundSecondPlayerWinnerSessionUser2.setRoundResult(Round.SECOND_PLAYER);
 
-        roundDTOSecondDrawSessionUser2 = new RoundDTO();
-        roundDTOSecondDrawSessionUser2.setFirstPlayerMove(Move.ROCK.getValue());
-        roundDTOSecondDrawSessionUser2.setRoundResult(RoundDTO.DRAW);
+        roundSecondDrawSessionUser2 = new Round();
+        roundSecondDrawSessionUser2.setFirstPlayerMove(Move.ROCK.getValue());
+        roundSecondDrawSessionUser2.setRoundResult(Round.DRAW);
 
         allRoundsPerSingleSessionUser2 =new ArrayList<>();
-        allRoundsPerSingleSessionUser2.add(roundDTOFirstPlayerWinnerSessionUser1);
-        allRoundsPerSingleSessionUser2.add(roundDTOSecondPlayerWinnerSessionUser1);
-        allRoundsPerSingleSessionUser2.add(roundDTOSecondDrawSessionUser1);
+        allRoundsPerSingleSessionUser2.add(roundFirstPlayerWinnerSessionUser1);
+        allRoundsPerSingleSessionUser2.add(roundSecondPlayerWinnerSessionUser1);
+        allRoundsPerSingleSessionUser2.add(roundSecondDrawSessionUser1);
 
         roundsPerSingleSessionDTOUser1 = new RoundsPerSingleSessionDTO();
         roundsPerSingleSessionDTOUser1.setRoundNumbersPerSingleSession(ROUND_NUMBER_PER_SINGLE_SESSION);
@@ -96,10 +96,10 @@ class GameServiceTests {
         allRoundsForAllSessions.put(sessionIdUser2,roundsPerSingleSessionDTOUser2);
 
         getAllRoundsResultsForAllSessions = new HashMap<>();
-        getAllRoundsResultsForAllSessions.put(RoundDTO.TOTAL_ROUNDS_PLAYED, new AtomicInteger(3));
-        getAllRoundsResultsForAllSessions.put(RoundDTO.FIRST_PLAYER, new AtomicInteger(1));
-        getAllRoundsResultsForAllSessions.put(RoundDTO.SECOND_PLAYER, new AtomicInteger(1));
-        getAllRoundsResultsForAllSessions.put(RoundDTO.DRAW, new AtomicInteger(1));
+        getAllRoundsResultsForAllSessions.put(Round.TOTAL_ROUNDS_PLAYED, new AtomicInteger(3));
+        getAllRoundsResultsForAllSessions.put(Round.FIRST_PLAYER, new AtomicInteger(1));
+        getAllRoundsResultsForAllSessions.put(Round.SECOND_PLAYER, new AtomicInteger(1));
+        getAllRoundsResultsForAllSessions.put(Round.DRAW, new AtomicInteger(1));
 
     }
 
@@ -117,7 +117,7 @@ class GameServiceTests {
     @DisplayName("Get All Not Restarted Rounds Details per single user session Test")
     void getAllNotRestartedRoundsDetailsPerSingleSessionTest() {
 
-        when(gameServiceMock.getAllNotRestartedRoundsDetailsPerSingleSession((any()), (anyString()))).thenReturn(roundsPerSingleSessionDTOUser1);
+        when(gameServiceMock.getAllNotRestartedRoundsDetailsPerSingleSession((any()))).thenReturn(roundsPerSingleSessionDTOUser1);
 
         int expectedNotRestartedRoundNumbersPerSingleSession = roundsPerSingleSessionDTOUser1.getRoundNumbersPerSingleSession();
 
@@ -133,11 +133,11 @@ class GameServiceTests {
 
         String expectedFirstPlayerMoveRound1 = Move.PAPER.getValue();
         String expectedSecondPlayerMoveRound1 = Move.ROCK.getValue();
-        String expectedRoundResultAfterMovingRound1 = RoundDTO.FIRST_PLAYER;
+        String expectedRoundResultAfterMovingRound1 = Round.FIRST_PLAYER;
 
         String expectedFirstPlayerMoveRound2 = Move.SCISSORS.getValue();
         String expectedSecondPlayerMoveRound2 = Move.ROCK.getValue();
-        String expectedRoundResultAfterMovingRound2 = RoundDTO.SECOND_PLAYER;
+        String expectedRoundResultAfterMovingRound2 = Round.SECOND_PLAYER;
 
         Assertions.assertEquals(3, expectedNotRestartedRoundNumbersPerSingleSession,"The Rounds number should be 3");
 
@@ -158,7 +158,7 @@ class GameServiceTests {
     void getRoundWinnerAfterFirstPlayerPaperMoveTest(){
 
         String actualRoundWinner = gameService.getRoundWinnerAfterFirstPlayerMove(Move.PAPER.getValue());
-        String expectedRoundWinner = RoundDTO.FIRST_PLAYER;
+        String expectedRoundWinner = Round.FIRST_PLAYER;
 
         Assertions.assertEquals(expectedRoundWinner, actualRoundWinner, "The winner should be Player 1]");
     }
@@ -168,7 +168,7 @@ class GameServiceTests {
     void getRoundWinnerAfterFirstPlayerScissorsMoveTest(){
 
         String actualRoundWinner = gameService.getRoundWinnerAfterFirstPlayerMove(Move.SCISSORS.getValue());
-        String expectedRoundWinner = RoundDTO.SECOND_PLAYER;
+        String expectedRoundWinner = Round.SECOND_PLAYER;
 
         Assertions.assertEquals(expectedRoundWinner, actualRoundWinner, "The winner should be Player 2]");
     }
@@ -178,7 +178,7 @@ class GameServiceTests {
     void getRoundWinnerAfterFirstPlayerRockMoveTest(){
 
         String actualRoundWinner = gameService.getRoundWinnerAfterFirstPlayerMove(Move.ROCK.getValue());
-        String expectedRoundWinner = RoundDTO.DRAW;
+        String expectedRoundWinner = Round.DRAW;
 
         Assertions.assertEquals(expectedRoundWinner, actualRoundWinner, "The round result should be [Draw]]");
     }
@@ -220,17 +220,6 @@ class GameServiceTests {
     }
 
     @Test
-    @DisplayName("Restart Game Per Single Session User")
-    void restartGameTest() {
-
-        when(gameServiceMock.restartGame(anyString())).thenReturn(roundsPerSingleSessionDTOUser1);
-
-        boolean actualRoundIsRestarted = roundsPerSingleSessionDTOUser1.getAllRoundsPerSingleSession().get(2).isRestarted();
-
-        Assertions.assertTrue(actualRoundIsRestarted,"The Round should be restarted");
-    }
-
-    @Test
     @DisplayName("Getting All Rounds Details Per Single User Session Test, Positive Case")
     void getAllRoundsDetailsPerSingleSessionTestSuccess() {
 
@@ -238,7 +227,7 @@ class GameServiceTests {
         // firset::
         // when(gameServiceMock.getAllRoundsDetailsPerSingleSession((any()), (anyString()))).thenReturn( need to assigne [allRoundsForAllSessions] to allRoundsForAllSessions of the realdata);
 
-        gameServiceMock.getAllRoundsDetailsPerSingleSession(roundDTOFirstPlayerWinnerSessionUser1, sessionIdUser1);
+        gameServiceMock.getAllRoundsDetailsPerSingleSession(roundFirstPlayerWinnerSessionUser1, sessionIdUser1);
 
         int actualRoundNumbersPerSingleSession = roundsPerSingleSessionDTOUser2.getRoundNumbersPerSingleSession();
 
@@ -248,7 +237,7 @@ class GameServiceTests {
 
         String expectedFirstPlayerMove = Move.SCISSORS.getValue();
         String expectedSecondPlayerMove = Move.ROCK.getValue();
-        String expectedRoundResultAfterMoving = RoundDTO.SECOND_PLAYER;
+        String expectedRoundResultAfterMoving = Round.SECOND_PLAYER;
 
         Assertions.assertEquals(3, actualRoundNumbersPerSingleSession,"The Round number should be 3");
 
@@ -262,7 +251,7 @@ class GameServiceTests {
     @DisplayName("Getting All Rounds Details Per Single User Session Test, Negative Case")
     void getAllRoundsDetailsPerSingleSessionTestFailed() {
 
-        RoundsPerSingleSessionDTO actualRoundsPerSingleSessionDTO = gameService.getAllRoundsDetailsPerSingleSession(roundDTOSecondPlayerWinnerSessionUser1, sessionIdUser2);
+        RoundsPerSingleSessionDTO actualRoundsPerSingleSessionDTO = gameService.getAllRoundsDetailsPerSingleSession(roundSecondPlayerWinnerSessionUser1, sessionIdUser2);
 
         int actualRoundNumbersPerSingleSession = actualRoundsPerSingleSessionDTO.getRoundNumbersPerSingleSession();
 
@@ -272,7 +261,7 @@ class GameServiceTests {
 
         String expectedFirstPlayerMove = Move.PAPER.getValue();
         String expectedSecondPlayerMove = Move.SCISSORS.getValue();
-        String expectedRoundResultAfterMoving = RoundDTO.FIRST_PLAYER;
+        String expectedRoundResultAfterMoving = Round.FIRST_PLAYER;
 
         Assertions.assertNotNull(actualRoundsPerSingleSessionDTO,"The Round shouldn't be null");
         Assertions.assertEquals(1, actualRoundNumbersPerSingleSession,"The Round number should be 1");
@@ -290,11 +279,23 @@ class GameServiceTests {
         // need to be checked
         // when(gameServiceMock.getAllRoundsResultForAllSessions()).then( need to assigne [allRoundsForAllSessions] to allRoundsForAllSessions of the realdata);
 
+//
         HashMap<String, AtomicInteger>  expectedResult =  gameService.getAllRoundsResultForAllSessions();
 
-        AtomicInteger expectedTotalRoundsPlayed = expectedResult.get(RoundDTO.TOTAL_ROUNDS_PLAYED);
+        AtomicInteger expectedTotalRoundsPlayed = expectedResult.get(Round.TOTAL_ROUNDS_PLAYED);
 
         Assertions.assertEquals(expectedTotalRoundsPlayed.intValue(), 1,"The Total Rounds should be 1");
+    }
+
+    @Test
+    @DisplayName("Restart Game Per Single Session User")
+    void restartGameTest() {
+
+        when(gameServiceMock.restartGame(anyString())).thenReturn(roundsPerSingleSessionDTOUser1);
+
+        boolean actualRoundIsRestarted = roundsPerSingleSessionDTOUser1.getAllRoundsPerSingleSession().get(2).isRestarted();
+
+        Assertions.assertTrue(actualRoundIsRestarted,"The Round should be restarted");
     }
 
     private boolean validateOnPlayerMove(String playerMove){
@@ -310,11 +311,11 @@ class GameServiceTests {
     private String getExpectedRoundResultAfterMoving(String firstPlayerRandomMove){
 
         if(firstPlayerRandomMove.equals(Move.PAPER.getValue())){
-            return RoundDTO.FIRST_PLAYER;
+            return Round.FIRST_PLAYER;
         }else if(firstPlayerRandomMove.equals(Move.SCISSORS.getValue())){
-            return RoundDTO.SECOND_PLAYER;
+            return Round.SECOND_PLAYER;
         }
 
-        return RoundDTO.DRAW;
+        return Round.DRAW;
     }
 }
