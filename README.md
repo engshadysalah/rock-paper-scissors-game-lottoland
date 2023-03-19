@@ -82,4 +82,8 @@ The frontend not finish yet, so You can test the game by having 3 different user
    * Send the second request [restartGame], to restart the game.
    * Send the third request [allRoundsTotlalResultsForAllSessions], to get Total rounds played, Total Wins for first players, Total Wins for second players, and Total draws the rounds for all of the user sessions.
 
+## Git Branches
+   * Please use the latest changes of the main branch to run the applications, because the main branch is updated and has all of the latest changes for the backedn and frontend.
+
+   * There're a dev branch for the backend app [dev-backend] and also for the fronted app [dev-frontend], both of them not have the latest changes, also both of them are merged to the main branch then I continue working on the main branch to save time for switching bettwen the branches and the applications and also to work on the 2 appications [backend and frontend] at the same time.
 
